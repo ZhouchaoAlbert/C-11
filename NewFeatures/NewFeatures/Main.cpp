@@ -13,11 +13,15 @@
 #include"PointerTest.h"
 #include"AtomicTest.h"
 #include"LambdaTest.h"
+#include "Buffer.h"
+
 
 int _tmain(int argc, _TCHAR* argv[])
 {
 	AutoTest();
+	TypeidTest();
 	DecltypeTest();
+	DecltypeRuleTest();
 	ForEachTest();
 	MemInitTest();
 
@@ -26,52 +30,61 @@ int _tmain(int argc, _TCHAR* argv[])
 	PointerTest();
 	AtomicTest();
 	LambdaTest();
+
+	CBuffer<char> b1("buftest", 64);
+	char arr[10]  = "12345679";
+	b1.Append(arr, sizeof(arr));
+	char* buf = b1.GetBuf();
+	int len   = b1.GetLen();
+	std::string str(buf);
+
+	//“∆∂Øππ‘Ï
+	CBuffer<char> b2 = GetBuffer<char>("bufTest2");
+	char arr2[10] = "qazwsxedc";
+	b2.Append(arr2, sizeof(arr2));
+	char* buf2 = b2.GetBuf();
+	int   len2 = b2.GetLen();
+	std::string str2(buf2);
+	
+	
 	getchar();
 	return 0;
 }
 
-/*
+#include "smart_ptr.h"
 
-
-#include <algorithm>
-#include <iostream>
-#include <iterator>
-#include <ostream>
-#include <string>
-#include <utility>
-#include <vector>
-using namespace std;
-struct Plus {
-template <typename T, typename U>
-auto operator()(T&& t, U&& u) const
--> decltype(forward<T>(t) + forward<U>(u)) {
-return forward<T>(t) + forward<U>(u);
-}
+struct MyStruct
+{
+public:
+	MyStruct(){}
+	MyStruct(int a, int b) :a(a), b(b) {}
+	int a;
+	int b;
 };
-int main() {
-vector<int> i;
-i.push_back(1);
-i.push_back(2);
-i.push_back(3);
-vector<int> j;
-j.push_back(40);
-j.push_back(50);
-j.push_back(60);
-vector<int> k;
-vector<string> s;
-s.push_back("cut");
-s.push_back("flu");
-s.push_back("kit");
-vector<string> t;
-t.push_back("e");
-t.push_back("ffy");
-t.push_back("tens");
-vector<string> u;
-transform(i.begin(), i.end(), j.begin(), back_inserter(k), Plus());
-transform(s.begin(), s.end(), t.begin(), back_inserter(u), Plus());
-for_each(k.begin(), k.end(), [](int n) { cout << n << " "; });
-cout << endl;
-for_each(u.begin(), u.end(), [](const string& r) { cout << r << " "; });
-cout << endl;
+
+int main2()
+{
+	MyStruct *s = new MyStruct();
+	s->a = 10;
+	s->b = 20;
+
+	smart_ptr<MyStruct> sp(s);
+
+	cout << sp->a   << endl;
+	cout << sp->b   << endl;
+	cout << (*sp).a << endl;
+
+	smart_ptr<MyStruct> sp3 = sp;
+
+	smart_ptr<MyStruct> sp2 = make_smart<MyStruct>(100, 200);
+ 	cout << sp2->a << endl;
+ 	cout << sp2->b << endl;
+ 
+ 	auto p = sp2.release();
+ 	cout << p->a << endl;
+ 	cout << p->b << endl;
+ 	delete p;
+
+	getchar();
+ 	return 0;
 }
-*/

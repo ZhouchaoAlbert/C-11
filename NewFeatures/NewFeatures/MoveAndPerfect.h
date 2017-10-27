@@ -68,7 +68,7 @@ CHasPtrMemII GetTemp()
 }
 
 template<class T>
-void swap22(T& a, T& b)
+void Swap(T& a, T& b)
 {
 	T temp(std::move(a));
 	a = std::move(b);
@@ -79,23 +79,21 @@ void swap22(T& a, T& b)
 void MoveAndPerfectTest()
 {
 	//指针成员与拷贝构造
-	//CHasPtrMem a;
-	//CHasPtrMem b(a);
-	//std::cout << "add:" << &a.m_pData << "a:" << *a.m_pData << std::endl;
-	//std::cout << "add:" << &b.m_pData << "b:" << *b.m_pData << std::endl;
-
-	CHasPtrMemII a = GetTemp();
+	CHasPtrMem a;
+	CHasPtrMem b(a);
 	std::cout << "add:" << &a.m_pData << "a:" << *a.m_pData << std::endl;
-	//CHasPtrMemII b(a);
+	std::cout << "add:" << &b.m_pData << "b:" << *b.m_pData << std::endl;
+
+	CHasPtrMemII c = GetTemp();
+	std::cout << "add:" << &c.m_pData << "c:" << *a.m_pData << std::endl;
 
 	CHasPtrMemII bb;
-
 	CHasPtrMemII cc(std::move(bb));
 
 	std::cout << "add:" << &cc.m_pData << "cc:" << *cc.m_pData << std::endl;
+	
 	int aaaa = 1, bbbb = 2;
-
-	swap22(aaaa, bbbb);
+	Swap(aaaa, bbbb);
 }
 
 
@@ -139,7 +137,6 @@ void Test() {
 	PerfectForward(c);
 	// const rvalue ref
 	PerfectForward(move(a));
-
 }
 
 template <typename T,typename U>
@@ -150,26 +147,24 @@ void PerfectForward(T &&t ,U& Func)
 
 void RunCode2(double && m)
 {
+	std::cout << "Perfect RunCode2" << m << std::endl;
 }
 
 void RunHome2(double && h)
 {
+	std::cout << "Perfect RunHome2" << h << std::endl;
 }
 
 void RunComp2(double && c) 
 {
+	std::cout << "Perfect RunComp2" << c << std::endl;
 }
 
 void Test2()
 {
-	// 1.5
 	PerfectForward(1.5, RunComp2);
-	//8
 	PerfectForward(8, RunCode2);
-	// 1.5
 	PerfectForward(1.5, RunHome2);
 }
-
-
 
 #endif

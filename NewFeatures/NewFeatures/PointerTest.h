@@ -71,6 +71,7 @@ void ShareProTest()
 	sp1.Print();
 }
 
+//share_ptr
 void SharePtrTest()
 {
 	shared_ptr<int> spi(new int); 
@@ -101,12 +102,15 @@ void SharePtrTest()
 	ShareProTest();
 }
 
+
+
 unique_ptr<CReport> GetReportObj(const char *s)
 {
 	unique_ptr<CReport> tObj(new CReport(s));
 	return tObj;
 }
 
+//unique_ptr
 void UniquePtrTest()
 {
 	unique_ptr<CReport> ps;
@@ -124,7 +128,7 @@ void UniquePtrTest()
 	ps2->comment("up_p2");
 	ps1->comment("up_p1");
 
-	//std::unique_ptr<double[]> pdarr(new double[5]);
+	std::unique_ptr<double[]> parr(new double[5]);
 }
 
 

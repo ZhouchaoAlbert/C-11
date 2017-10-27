@@ -6,8 +6,6 @@
 class White {};
 class Black {};
 
-
-
 void TypeidTest()
 {
 	White a;
@@ -25,78 +23,98 @@ void TypeidTest()
 	float e;
 	std::cout << typeid(d).name()  <<"  "  << typeid(e).name()<< std::endl; //
 }
-//RTTI无法满足程序员的需求：
-//因为RTTI在运行时才确定出类型，而更多的需求是在编译时确定类型。
-//并且， 
 
-using size_t    = decltype(sizeof(0));
-using ptrdiff_t = decltype((int *)0 - (int*)0);
-using nullptr_t = decltype(nullptr);
 
-const int&& foo(); 
-const int bar(); 
-int i;
-struct A { double x; };// 通常的程序是要使用推导出来的这种类型而不是单纯地识别它
-
-auto add(int q, int p)->int
+//适当扩大模板泛型编程的能力
+template<typename T1, typename T2>
+void Sum(T1& t1, T2& t2, decltype(t1 + t2)& sum)
 {
-	return q + p;
+	s = t1 + t2;
 }
 
-//decltype 类型说明符生成指定表达式的类型。在此过程中，编译器分析表达式并得到它的类型，却不实际计算表达式的值。
+template <typename T1, typename T2>
+auto compose(T1 t1, T2 t2) -> decltype(t1 + t2)
+{
+	return t1 + t2;
+}
+
 void DecltypeTest() 
 {
-	int c = add(1, 2);
-	nullptr_t t = nullptr;
-	std::cout << "t:" << "  " << sizeof(t) << std::endl;
-  
-	const double& mmm = 6;
-	const A* a = new A();
-	decltype(foo()) x1 = 0;		// 类型为const int&&
-	decltype(bar()) x2 = 0;		// 类型为int
-	decltype(i) x3;				// 类型为int
-	decltype(a->x) x4;			// 类型为double
-	decltype((a->x)) x5 = mmm;	// 类型为const double&
+	std::vector<int> vec;
+	vec.push_back(1);
+	vec.push_back(2);
+	vec.push_back(3);
+	vec.push_back(4);
+	//decltype 与 typedef使用 
+	typedef decltype(vec.begin()) vecType;
+	using vecDecltype = decltype(vec);
+
+	using size_tt = decltype(sizeof(0));
+	size_tt  stTemp = 1;
+
+
+	for (vecDecltype::iterator idx = vec.begin(); idx < vec.end(); idx++)
+	{
+		auto value = idx;
+	}
+	for (vecType idx = vec.begin(); idx < vec.end(); idx++)
+	{
+		auto value = idx;
+	}
+
+	//重用匿名类型
+	enum{ K1, K2, K3 }anony_e;
+	union
+	{
+		decltype(anony_e) key;
+		char* name;
+	}anony_u;
+	struct
+	{
+		int d;
+		decltype(anony_u) id;
+	}anony_s[100];
+
+	decltype(anony_s) as;
+	as[0].id.key = decltype(anony_e)::K1;
+
+
+	//适当扩大模板泛型编程的能力
+	auto v = compose(2, 3.14);
 
 }
 
+
+
+//decltype 推导四规则
+
+int i = 2;
+//重载的函数
+void Overloaded(int){};
+void overloaded(char){};
 
 void DecltypeRuleTest()
 {
-	int i = 2;
 	int arr[5] = { 0 };
 	int *ptr = arr;
-	struct S 
+	struct S
 	{
 		double d;
-	} s;
-	void overload(int);
-	void overload(char);
-	int&& RvalRef();
-	const bool Func(int);
+	}s;
 
-	// 规则1
-	decltype(arr) var1; // int [5]
-	decltype(ptr) var2; // int*
-	decltype(s.d) var4; // double
-	//decltype(overload) var5; // wrong
+	// 规则1: 单个标记符表达式以及访问类成员，推导为本类型
+	decltype(arr) varl;              //int[5], 标记符表达式
+	decltype(ptr) var2;              //int*    标记符表达式
+	decltype(s.d) var3;              //double  成员访问表达式
+	//decltype (Overloaded) var4;	 // 无法通过编译，是个重载的函数
 
-	// 规则2
-	decltype(RvalRef()) val6 = 1; // int&&
+	int&& mmmm = 11;
+	decltype(mmmm) var5 = 1;	     //将亡值，推导为类型的右值引用
 
-	// 规则3
-	decltype(true ? i : i) var7 = i; // int&
-	decltype((i)) var8 = i; // int&
-	decltype(++i) var9 = i; // int&
-	decltype(arr[3]) var10   = i; // int&
-	decltype(*ptr) var11    = i; //int&
-	decltype("lval") var3 = "lval"; // (const char*)&
-
-	// 规则4
-	decltype(1) var13;        // int
-	decltype(i++) var14;      // int
-	decltype(Func(1)) var15;  // const bool
-
+	//规则3:左值，推导为类型的引用
+	int i = 7;
+	decltype(true ? i : i) var6 = i;  //int& 三元运算操作
+	decltype((i)) var7 = i;           //int& 带圆括号的左值
 }
 
 

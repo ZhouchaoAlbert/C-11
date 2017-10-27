@@ -14,14 +14,14 @@ void fun()
 {
 	for (long long i = 0; i < 10000000LL; ++i)
 	{
-		lk.lock();
-		sum222 += i;
-		lk.unlock();
+		//lk.lock();
+		sum += i;
+		//lk.unlock();
 	}	
 }
 
 //原子数据类型操作
-void Test1()
+void AtomicTypeTest()
 {
 	std::cout << "Before joining,sum = " << sum222 << std::endl;
 	std::thread t1(fun);
@@ -32,11 +32,11 @@ void Test1()
 }
 
 
-std::atomic_flag lock = ATOMIC_FLAG_INIT;                               //初始化
+std::atomic_flag lock = ATOMIC_FLAG_INIT;                    
 
 void f(int n)
 {
-	while (lock.test_and_set())                                        //获取锁的状态
+	while (lock.test_and_set())                       //获取锁的状态
 		std::cout << "Waiting ... " << std::endl;     //自旋等待
 	std::cout << "Thread " << n << " is start working." << std::endl;
 }
@@ -50,9 +50,9 @@ void g(int n)
 
 void AtomicTest()
 {
-	Test1();
+	AtomicTypeTest();
 
-	lock.test_and_set();  //设置True
+	lock.test_and_set();  //设置true
 	std::thread t1(f,1);
 	std::thread t2(g,2);
 	t1.join();
