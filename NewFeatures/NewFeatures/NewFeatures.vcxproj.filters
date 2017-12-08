@@ -19,6 +19,9 @@
     <Filter Include="头文件\Buffer">
       <UniqueIdentifier>{01766498-4427-4a10-b4d1-8910e804a6b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Functional">
+      <UniqueIdentifier>{da02e5b8-0168-4a5e-b4df-4dd92d1d2fcf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -69,12 +72,18 @@
     <ClInclude Include="Buffer.h">
       <Filter>头文件\Buffer</Filter>
     </ClInclude>
+    <ClInclude Include="FunctionalTest.h">
+      <Filter>头文件\Functional</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Main2.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

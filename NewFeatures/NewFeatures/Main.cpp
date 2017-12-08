@@ -16,7 +16,7 @@
 #include "Buffer.h"
 
 
-int _tmain(int argc, _TCHAR* argv[])
+int _tmain1(int argc, _TCHAR* argv[])
 {
 	AutoTest();
 	TypeidTest();
