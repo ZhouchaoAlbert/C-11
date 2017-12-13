@@ -75,6 +75,9 @@
     <ClInclude Include="FunctionalTest.h">
       <Filter>头文件\Functional</Filter>
     </ClInclude>
+    <ClInclude Include="FunctionalTest2.h">
+      <Filter>头文件\Functional</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

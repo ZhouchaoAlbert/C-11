@@ -86,6 +86,7 @@
     <ClInclude Include="ForTest.h" />
     <ClInclude Include="FriendEx.h" />
     <ClInclude Include="FunctionalTest.h" />
+    <ClInclude Include="FunctionalTest2.h" />
     <ClInclude Include="Inherit.h" />
     <ClInclude Include="LambdaTest.h" />
     <ClInclude Include="MemInitTest.h" />
